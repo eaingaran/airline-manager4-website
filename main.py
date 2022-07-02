@@ -1,9 +1,9 @@
 import os
 import re
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 from google.cloud import storage
 from google.cloud.exceptions import NotFound
@@ -29,7 +29,7 @@ else:
 
 app_name = 'Airline Manager Website'
 
-app = Flask(app_name)
+app = Flask(app_name, template_folder='templates')
 
 bucket_name = os.environ.get('BUCKET_NAME', 'cloud-run-am4')
 fuel_log_file = os.environ.get('FUEL_LOG_FILE', 'fuel_log.json')
@@ -63,6 +63,8 @@ def get_fuel_stats():
 
 @app.route("/")
 def get_status():
+    time = request.args.get("time")
+    LOGGER.info(f'client time is {time}')
     fuel_stats_json = get_fuel_stats()
     if fuel_stats_json is None:
         return render_template('error.html', title='Error', heading='Ooops!', message='Fuel stats file not found. <br> Please contact me at <a href="mailto:me@aingaran.dev')
