@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <table id="data" class="table table-striped">
+    <caption>Fuel and CO2 costs</caption>
+    <thead>
+      <tr>
+        <th>Time</th>
+        <th>Fuel Price</th>
+        <th>CO2 Quota Price</th>
+        <th>Fuel Low?</th>
+        <th>CO2 Low?</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for stats in fuel_stats %}
+        <tr>
+          <td>{{ stats.time }}</td>
+          <td>{{ stats.fuel_price }}</td>
+          <td>{{ stats.co2_price }}</td>
+          <td>{{ stats.fuel_low }}</td>
+          <td>{{ stats.co2_low }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    $(document).ready(function () {
+      $('#data').DataTable({
+        columns: [
+          null,
+          null,
+          null,
+          {searchable: false},
+          {searchable: false}],
+      });
+    });
+  </script>
+{% endblock %}
