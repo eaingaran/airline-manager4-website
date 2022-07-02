@@ -2,16 +2,29 @@
 
 {% block content %}
   <div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+      Date
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+      {% for date in dates %}
+        <li><a class="dropdown-item" href="/{{ date }}">{{ date }}</a></li>
+      {% endfor %}
+      <li><hr class="dropdown-divider"></li>
+      <li><a class="dropdown-item" href="/">Today</a></li>
+    </ul>
+  </div>
+  <br>
+  <div class="dropdown">
     <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="days" data-bs-toggle="dropdown" aria-expanded="false">
-      Year
+      Date
     </a>
 
     <ul class="dropdown-menu" aria-labelledby="days">
       {% for date in dates %}
       <li><a class="dropdown-item" href="/{{ date }}">{{ date }}</a></li>
+      {% endfor %}
       <li><hr class="dropdown-divider"></li>
       <li><a class="dropdown-item" href="/">Today</a></li>
-      {% endfor %}
     </ul>
   </div>
   <br>
