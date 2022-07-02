@@ -14,20 +14,6 @@
     </ul>
   </div>
   <br>
-  <div class="dropdown">
-    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="days" data-bs-toggle="dropdown" aria-expanded="false">
-      Date
-    </a>
-
-    <ul class="dropdown-menu" aria-labelledby="days">
-      {% for date in dates %}
-      <li><a class="dropdown-item" href="/{{ date }}">{{ date }}</a></li>
-      {% endfor %}
-      <li><hr class="dropdown-divider"></li>
-      <li><a class="dropdown-item" href="/">Today</a></li>
-    </ul>
-  </div>
-  <br>
   <table id="data" class="table table-striped">
     <caption>Fuel and CO2 costs</caption>
     <thead>
@@ -61,8 +47,8 @@
           null,
           null,
           null,
-          {searchable: false},
-          {searchable: false}],
+          null,
+          null], /* {orderable: false, searchable: false} */
       });
     });
   </script>
