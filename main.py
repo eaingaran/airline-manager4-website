@@ -57,7 +57,6 @@ class FuelStats():
 
 
 def get_fuel_stats():
-    return json.loads('{"2022-07-02": {"09:30:00 UTC": {"fuel_price": 1360, "co2_price": 134}, "10:00:00 UTC": {"fuel_price": 1540, "co2_price": 176}, "10:30:00 UTC": {"fuel_price": 1150, "co2_price": 104}, "11:00:00 UTC": {"fuel_price": 930, "co2_price": 122}, "11:30:00 UTC": {"fuel_price": 570, "co2_price": 170}, "12:00:00 UTC": {"fuel_price": 2430, "co2_price": 196}}}')
     client = storage.Client()
     bucket = client.get_bucket(bucket_name)
     new_blob = bucket.blob(fuel_log_file)
