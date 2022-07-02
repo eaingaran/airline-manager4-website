@@ -63,8 +63,8 @@ def get_fuel_stats():
 
 @app.route("/")
 def get_status():
-    time = request.args.get("time")
-    LOGGER.info(f'client time is {time}')
+    args = request.args
+    LOGGER.info(args)
     fuel_stats_json = get_fuel_stats()
     if fuel_stats_json is None:
         return render_template('error.html', title='Error', heading='Ooops!', message='Fuel stats file not found. <br> Please contact me at <a href="mailto:me@aingaran.dev')
@@ -74,7 +74,7 @@ def get_status():
                       for time, stat in fuel_stats_json[datetime.now().strftime('%Y-%m-%d')].items()]
     else:
         return render_template('error.html', title='Error', heading='Ooops!', message='Unable to find fuel stats for today. <br> You can check stats based on date by using the url endpoint "/yyyy-mm-dd" <br> If you need assistance, please contact me at <a href="mailto:me@aingaran.dev')
-    return render_template('basic_table.html', title='Fuel Statistics',
+    return render_template('table.html', title='Fuel Statistics',
                            fuel_stats=fuel_stats)
 
 
@@ -91,7 +91,7 @@ def get_status_date(date):
                       for time, stat in fuel_stats_json[date].items()]
     else:
         return render_template('error.html', title='Error', heading='Ooops!', message=f'Unable to find fuel stats for the day {date}. <br> You can check stats based on date by using the url endpoint "/yyyy-mm-dd" <br> If you need assistance, please contact me at <a href="mailto:me@aingaran.dev')
-    return render_template('basic_table.html', title='Fuel Statistics',
+    return render_template('table.html', title='Fuel Statistics',
                            fuel_stats=fuel_stats)
 
 
