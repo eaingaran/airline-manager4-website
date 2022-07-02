@@ -77,7 +77,7 @@ def get_status():
 
 
 @app.route("/<date>")
-def get_status(date):
+def get_status_date(date):
     if not re.match(r'\d{4}-\d{2}-\d{2}', date):
         return render_template('error.html', title='Error', heading='Ooops!', message=f'Date supplied "{date}" is not of the format yyyy-mm-dd. Please check the date again. <br> if you still need assistance, please contact me at <a href="mailto:me@aingaran.dev')
     fuel_stats_json = get_fuel_stats()
