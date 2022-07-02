@@ -1,19 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div class="dropdown">
-    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-      Date
-    </button>
-    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-      {% for date in dates %}
-        <li><a class="dropdown-item" href="/{{ date }}">{{ date }}</a></li>
-      {% endfor %}
-      <li><hr class="dropdown-divider"></li>
-      <li><a class="dropdown-item" href="/">Today</a></li>
-    </ul>
+  <div class="row form-group">
+    <label for="date" class="col-sm-1 col-form-label">Date</label>
+    <div class="col-sm-2">
+        <div class="input-group date" id="datepicker">
+            <input type="text" class="form-control">
+            <span class="input-group-append">
+                <span class="input-group-text bg-white d-block">
+                    <em class="fa fa-calendar"></em>
+                </span>
+            </span>
+        </div>
+    </div>
   </div>
-  <br>
+  <br/>
   <table id="data" class="table table-striped">
     <caption>Fuel and CO2 costs</caption>
     <thead>
@@ -50,6 +51,14 @@
           null,
           null], /* {orderable: false, searchable: false} */
       });
+      $('#datepicker').datepicker({
+        clearBtn: true,
+        format: "yyyy-mm-dd",
+      });
+    });
+    $("#datepicker").on("change", function() {
+        let pickedDate = $("input").val();
+        window.location.href = "/" + pickedDate;
     });
   </script>
 {% endblock %}
