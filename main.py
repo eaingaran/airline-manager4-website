@@ -63,10 +63,7 @@ def get_fuel_stats():
 
 @app.route("/")
 def get_status():
-    args = request.args
-    heads = request.headers
-    LOGGER.info(json.dumps(args))
-    LOGGER.info(json.dumps(heads))
+    LOGGER.info(request.__dict__)
     fuel_stats_json = get_fuel_stats()
     if fuel_stats_json is None:
         return render_template('error.html', title='Error', heading='Ooops!', message='Fuel stats file not found. <br> Please contact me at <a href="mailto:me@aingaran.dev')
@@ -98,4 +95,6 @@ def get_status_date(date):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
+    from waitress import serve
+
+    serve(app, host='0.0.0.0', port=int(os.environ.get("PORT", 8080)))
