@@ -73,7 +73,6 @@ def render_error_template(message):
 
 @app.route("/")
 def get_status():
-    LOGGER.info(session)
     if 'time_zone_offset' not in session:
         session['referrer'] = request.url
         return redirect('/get_tz')
@@ -115,13 +114,13 @@ def get_status_date(date):
 
 @app.route("/get_tz")
 def get_time_zone():
-    LOGGER.info('getting time zone')
+    LOGGER.debug('getting time zone')
     return render_template('get_tz.html', title='Get Time Zone')
 
 
 @app.route("/set_tz/<tz_offset>/<tz>")
 def set_time_zone(tz_offset, tz):
-    LOGGER.info(f'Setting time zone to {tz} with offset {tz_offset} from UTC')
+    LOGGER.debug(f'Setting time zone to {tz} with offset {tz_offset} from UTC')
     session['time_zone_offset'] = int(tz_offset)
     session['time_zone'] = tz
     if 'referrer' in session:
