@@ -1,24 +1,22 @@
-{% extends "base.html" %}
-
-{% block content %}
-  <blockquote class="blockquote text-center">
-    <h1>{{ heading }}</h1>
-    <hr>
-    <p class="lead">
-      Calculating your timezone information, this should only take a few seconds.
-    </p>
-  </blockquote>
-{% endblock %}
-
-{% block scripts %}
-  <script>
-    $(document).ready(function () {
-        var offset = new Date().getTimezoneOffset();
-        var timezone = new Date().toLocaleDateString('en-US', {
-            day: '2-digit',
-            timeZoneName: 'short',
-        }).slice(4)
-        window.location.href = "/set_tz/" + offset + '/' + timezone;
-    });
-  </script>
+{% extends "base.html" %} {% block content %}
+<blockquote class="blockquote text-center">
+  <h1>{{ heading }}</h1>
+  <hr />
+  <p class="lead">
+    Calculating your timezone information, this should only take a few seconds.
+  </p>
+</blockquote>
+{% endblock %} {% block scripts %}
+<script>
+  $(document).ready(function () {
+    var offset = new Date().getTimezoneOffset();
+    var timezone = new Date()
+      .toLocaleDateString("en-US", {
+        day: "2-digit",
+        timeZoneName: "short",
+      })
+      .slice(4);
+    window.location.href = "/set_tz/" + offset + "/" + timezone;
+  });
+</script>
 {% endblock %}

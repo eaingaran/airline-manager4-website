@@ -4,7 +4,7 @@ import json
 import secrets
 from datetime import datetime, timedelta
 
-from flask import Flask, render_template, request, session, redirect
+from flask import Flask, render_template, request, session, redirect, send_from_directory
 
 from google.cloud import storage
 from google.cloud.exceptions import NotFound
@@ -46,8 +46,10 @@ class FuelStats():
     co2_low: bool
 
     def __init__(self, date, time, fuel_price, co2_price, timezone_offset, timezone):
-        _datetime = datetime.strptime(' '.join([date, time]), ' '.join([DATE_FORMAT, TIME_FORMAT]))
-        self.time = (_datetime - timedelta(minutes=timezone_offset)).strftime(TIME_FORMAT) + timezone
+        _datetime = datetime.strptime(
+            ' '.join([date, time]), ' '.join([DATE_FORMAT, TIME_FORMAT]))
+        self.time = (_datetime - timedelta(minutes=timezone_offset)
+                     ).strftime(TIME_FORMAT) + timezone
         self.fuel_price = fuel_price
         self.co2_price = co2_price
         self.fuel_low = fuel_price < 500
@@ -72,7 +74,8 @@ def render_error_template(message):
 
 @app.route("/")
 def get_status():
-    if not all (key in session for key in ['time_zone_offset', 'timezone']):
+    LOGGER.info(session)
+    if 'time_zone_offset' not in session:
         session['referrer'] = request.url
         return redirect('/get_tz')
     session.pop("referrer", None)
@@ -92,7 +95,7 @@ def get_status():
 
 @app.route("/<date>")
 def get_status_date(date):
-    if not all (key in session for key in ['time_zone_offset', 'timezone']):
+    if 'time_zone_offset' not in session:
         session['referrer'] = request.url
         return redirect('/get_tz')
     session.pop("referrer", None)
@@ -127,8 +130,13 @@ def set_time_zone(tz_offset, tz):
     return redirect('/')
 
 
-if __name__ == "__main__":
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
+
+if __name__ == "__main__":
     # https://flask.palletsprojects.com/quickstart/#sessions.
     app.secret_key = secrets.token_hex()
 
