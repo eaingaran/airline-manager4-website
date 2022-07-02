@@ -64,7 +64,9 @@ def get_fuel_stats():
 @app.route("/")
 def get_status():
     args = request.args
-    LOGGER.info(args)
+    heads = request.headers
+    LOGGER.info(json.dumps(args))
+    LOGGER.info(json.dumps(heads))
     fuel_stats_json = get_fuel_stats()
     if fuel_stats_json is None:
         return render_template('error.html', title='Error', heading='Ooops!', message='Fuel stats file not found. <br> Please contact me at <a href="mailto:me@aingaran.dev')
