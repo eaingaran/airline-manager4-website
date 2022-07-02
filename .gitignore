@@ -323,4 +323,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Visual Studio Code
+.vscode
+
 # End of https://www.toptal.com/developers/gitignore/api/python,flask,git,macos,windows
