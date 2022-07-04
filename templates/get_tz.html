@@ -9,14 +9,15 @@
 {% endblock %} {% block scripts %}
 <script>
   $(document).ready(function () {
-    var offset = new Date().getTimezoneOffset();
-    var timezone = new Date()
-      .toLocaleDateString("en-US", {
+    var date = new Date();
+    var offset = date.getTimezoneOffset();
+    var timezone = date.toLocaleDateString("en-US", {
         day: "2-digit",
         timeZoneName: "short",
       })
       .slice(4);
-    window.location.href = "/set_tz/" + offset + "/" + timezone;
+    var formatted_date = new Date(date.getTime() - (offset*60*1000)).toISOString().split('T')[0];
+    window.location.href = "/set_tz/" + formatted_date + "/" + offset + "/" + timezone;
   });
 </script>
 {% endblock %}
