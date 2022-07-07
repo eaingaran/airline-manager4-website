@@ -35,7 +35,6 @@ DATE_FORMAT = '%Y-%m-%d'
 TIME_FORMAT = '%H:%M:%S %Z'
 
 bucket_name = os.environ.get('BUCKET_NAME', 'cloud-run-am4')
-fuel_log_file = os.environ.get('FUEL_LOG_FILE', 'fuel_log.json')
 
 
 class FuelStats():
@@ -53,7 +52,11 @@ class FuelStats():
         self.co2_low = co2_price < 130
 
 
-def get_fuel_stats():
+def get_fuel_stats(date):
+    day = datetime.strptime(date, DATE_FORMAT)
+    current_month = day.strftime("%b")
+    current_year = day.strftime("%Y")
+    fuel_log_file = f'{current_year}_{current_month}_fuel_stats.json'
     client = storage.Client()
     bucket = client.get_bucket(bucket_name)
     new_blob = bucket.blob(fuel_log_file)
@@ -121,7 +124,7 @@ def get_status():
         session['referrer'] = request.url
         return redirect('/get_tz')
     session.pop("referrer", None)
-    fuel_stats_json = get_fuel_stats()
+    fuel_stats_json = get_fuel_stats(session.get('date', datetime.now().strftime(DATE_FORMAT)))
     if fuel_stats_json is None:
         return render_error_template(message='Fuel stats file not found. <br> Please contact me at <a href="mailto:me@aingaran.dev')
     fuel_stats = compute_fuel_stats(fuel_stats_json, session['time_zone_offset'], session['time_zone'], session.get('date', datetime.now().strftime(DATE_FORMAT)))
@@ -138,7 +141,7 @@ def get_status_date(date):
     session.pop("referrer", None)
     if not re.match(r'\d{4}-\d{2}-\d{2}', date):
         return render_error_template(message=f'Date supplied "{date}" is not of the format yyyy-mm-dd. Please check the date again. <br> if you still need assistance, please contact me at <a href="mailto:me@aingaran.dev')
-    fuel_stats_json = get_fuel_stats()
+    fuel_stats_json = get_fuel_stats(date)
     if fuel_stats_json is None:
         return render_error_template(message='Fuel stats file not found. <br> please contact me at <a href="mailto:me@aingaran.dev')
     fuel_stats = compute_fuel_stats(fuel_stats_json, session['time_zone_offset'], session['time_zone'], date)
