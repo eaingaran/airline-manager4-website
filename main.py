@@ -56,7 +56,7 @@ def get_fuel_stats(date):
     day = datetime.strptime(date, DATE_FORMAT)
     current_month = day.strftime("%b")
     current_year = day.strftime("%Y")
-    fuel_log_file = f'{current_year}_{current_month}_fuel_stats.json'
+    fuel_log_file = f'fuel_log/{current_year}/{current_month}_fuel_stats.json'
     client = storage.Client()
     bucket = client.get_bucket(bucket_name)
     new_blob = bucket.blob(fuel_log_file)
