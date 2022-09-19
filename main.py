@@ -148,7 +148,30 @@ def get_status_date(date):
     if fuel_stats is not None:
         return render_template('table.html', title='Fuel Statistics', fuel_stats=fuel_stats)
     return render_error_template(message=f'Unable to find fuel stats for the day {date}. <br> You can check stats based on date by using the url endpoint <em>"{request.url}/yyyy-mm-dd"</em> <br> If you need assistance, please contact me at <a href="mailto:me@aingaran.dev">me@aingaran.dev</a>')
-    
+
+
+@app.route("/p")
+def get_prediction():
+    if 'time_zone_offset' not in session:
+        session['referrer'] = request.url
+        return redirect('/get_tz')
+    session.pop("referrer", None)
+    date_string = session.get('date', datetime.now().strftime(DATE_FORMAT))
+    [year, month, date] = date_string.split('-')
+    [year, month, date] = [int(year), int(month), int(date)]
+    if month != 1:
+        month -= 1
+    else:
+        month = 12
+        year -= 1
+    fuel_stats_json = get_fuel_stats(f'{year:04}-{month:02}-{date:02}')
+    if fuel_stats_json is None:
+        return render_error_template(message='Fuel stats file not found. <br> Please contact me at <a href="mailto:me@aingaran.dev')
+    fuel_stats = compute_fuel_stats(fuel_stats_json, session['time_zone_offset'], session['time_zone'], f'{year:04}-{month:02}-{date:02}')
+    if fuel_stats is not None: 
+        return render_template('table.html', title='Fuel Statistics', fuel_stats=fuel_stats)
+    return render_error_template(message=f'Unable to find fuel prediction for today. <br> You can check stats based on date by using the url endpoint <em>"{request.url}yyyy-mm-dd"</em> <br> If you need assistance, please contact me at <a href="mailto:me@aingaran.dev">me@aingaran.dev</a>')
+
 
 @app.route("/get_tz")
 def get_time_zone():

@@ -5,11 +5,13 @@ Shows the price of Fuel and CO2 quotas
 ## usage
 
 - For current day's price  
-    `https://airline-manager4-website-e2pjibedjq-uc.a.run.app/`
+    `https://am4.aingaran.dev/`
 - For a specific date (in yyyy-mm-dd format)  
-    `https://airline-manager4-website-e2pjibedjq-uc.a.run.app/yyyy-mm-dd`  
+    `https://am4.aingaran.dev/yyyy-mm-dd`  
     eg.,  
-    `https://airline-manager4-website-e2pjibedjq-uc.a.run.app/2022-07-02`
+    `https://am4.aingaran.dev/2022-07-02`
+- For predicted price (Today's date, last month)
+    `https://am4.aingaran.dev/p`
 
 ## contact
 
